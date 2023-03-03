@@ -8,8 +8,8 @@ SRC = draw_line.c init_grid.c draw_grid.c\
 		utils/get_next_line.c utils/get_next_line_utils.c utils/ft_itoa.c utils/ft_atoi.c
 # SRC = test/moving_wire.c draw_line.c color.c
 OBJ = ${SRC:.c=.o}
-LIBMLX	:= MLX42/build/libmlx42.a
-LIBGLFW	:= MLX42/build/_deps/glfw-build/src/libglfw3.a 
+LIBMLX	:= MLX42/libmlx42.a
+LIBGLFW	:= MLX42/libglfw3.a 
 LIBS	:= $(LIBMLX) $(LIBGLFW) -ldl -pthread -lm -Iinclude -framework Cocoa -framework OpenGL -framework IOKit
 
 FMW = "\033[31m\
