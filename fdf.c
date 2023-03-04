@@ -1,5 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -20,8 +18,6 @@ void	ft_error(void)
 
 void	render(t_vars *vars)
 {
-	mlx_delete_image(vars->mlx, vars->img);
-	vars->img = mlx_new_image(vars->mlx, WIDTH - (WIDTH / 5), HEIGHT);
 	draw_grid(vars);
 	if (!vars->img || (mlx_image_to_window(vars->mlx, vars->img, 0, 0) < 0))
 		ft_error();
@@ -32,12 +28,6 @@ void	hook(void *param)
 	t_vars	*vars;
 
 	vars = (t_vars *)param;
-	render(vars);
-	if (mlx_is_key_down(vars->mlx, MLX_KEY_BACKSPACE))
-	{
-		vars->grid_start.x = 700;
-		vars->grid_start.y = 200;
-	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_ESCAPE))
 	{
 		mlx_close_window(vars->mlx);
@@ -57,6 +47,7 @@ int	fdf(char *map)
 	if (!vars.img || (mlx_image_to_window(vars.mlx, vars.img, 0, 0) < 0))
 		ft_error();
 	init_grid(&vars, map);
+	render(&vars);
 	mlx_loop_hook(vars.mlx, hook, &vars);
 	mlx_loop(vars.mlx);
 	mlx_terminate(vars.mlx);

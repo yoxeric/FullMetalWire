@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"fdf.h"
+#include"fdf_bonus.h"
 
 float	up_ui(t_vars *vars, float val, int pos, float step)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"fdf.h"
+#include"fdf_bonus.h"
 
 void	hook_mouse(mouse_key_t mouse_key, action_t action,
 	modifier_key_t m, void *param)
