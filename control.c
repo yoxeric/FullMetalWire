@@ -3,14 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   control.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhachami <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 22:16:07 by yhachami          #+#    #+#             */
-/*   Updated: 2023/02/19 22:16:10 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/03/05 00:17:37 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"fdf_bonus.h"
+
+void	hook_projection(void *param)
+{
+	t_vars	*vars;
+
+	vars = (t_vars *)param;
+	if (mlx_is_key_down(vars->mlx, MLX_KEY_2)
+		|| mlx_is_key_down(vars->mlx, MLX_KEY_KP_2))
+	{
+		vars->army.x = 50;
+		vars->army.y = 0;
+		vars->project = 1;
+		vars->grid_rot.x = 0.78;
+		vars->grid_rot.y = 0.05;
+	}
+	if (mlx_is_key_down(vars->mlx, MLX_KEY_3)
+		|| mlx_is_key_down(vars->mlx, MLX_KEY_KP_3))
+	{
+		vars->army.x = 10;
+		vars->army.y = 1;
+		vars->project = 0;
+		vars->grid_rot.x = 0.59;
+		vars->grid_rot.y = 0.5;
+	}
+}
 
 void	hook_move(void *param)
 {
@@ -74,12 +99,12 @@ void	hook_rot(void *param)
 		vars->index = 2;
 		vars->grid_rot.x -= up_ui(vars, vars->grid_rot.x * 10, 200, 0.02);
 	}
-	if (mlx_is_key_down(vars->mlx, MLX_KEY_W))
+	if (mlx_is_key_down(vars->mlx, MLX_KEY_W) && vars->army.y != 0)
 	{
 		vars->index = 3;
 		vars->grid_rot.y += up_ui(vars, vars->grid_rot.y * 10, 225, 0.02);
 	}
-	if (mlx_is_key_down(vars->mlx, MLX_KEY_S))
+	if (mlx_is_key_down(vars->mlx, MLX_KEY_S) && vars->army.y != 0)
 	{
 		vars->index = 3;
 		vars->grid_rot.y -= up_ui(vars, vars->grid_rot.y * 10, 225, 0.02);

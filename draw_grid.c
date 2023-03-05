@@ -21,21 +21,21 @@ void	make_grid(t_vars *vars, t_vector3 step)
 	j = 0;
 	while (j < vars->grid_size.y)
 	{
-		step.z = vars->p[i][j].z * vars->grid_shift.z * vars->zoom
+		step.z = vars->p[i][j].z * vars->grid_shift.z
 			* sin(vars->grid_rot.y);
 		vars->p[i][j].x = step.x;
 		vars->p[i][j].y = step.y - step.z;
-		step.x += vars->grid_shift.x * vars->zoom * cos(vars->grid_rot.x);
-		step.y += vars->grid_shift.y * vars->zoom
+		step.x += vars->grid_shift.x * cos(vars->grid_rot.x);
+		step.y += vars->grid_shift.y
 			* sin(vars->grid_rot.x) * cos(vars->grid_rot.y);
 		i++;
 		if (i == vars->grid_size.x)
 		{
 			j++;
 			i = 0;
-			step.x = vars->grid_start.x - (vars->grid_shift.x * vars->zoom * j)
+			step.x = vars->grid_start.x - (vars->grid_shift.x * j)
 				* sin(vars->grid_rot.x);
-			step.y = vars->grid_start.y + (vars->grid_shift.y * vars->zoom * j)
+			step.y = vars->grid_start.y + (vars->grid_shift.y * j)
 				* cos(vars->grid_rot.x) * cos(vars->grid_rot.y);
 		}
 	}

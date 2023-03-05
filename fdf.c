@@ -1,10 +1,12 @@
+/* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   fdf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhachami <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/03 07:55:31 by yhachami          #+#    #+#             */
-/*   Updated: 2023/03/03 07:55:37 by yhachami         ###   ########.fr       */
+/*   Created: 2023/02/13 07:55:31 by yhachami          #+#    #+#             */
+/*   Updated: 2023/03/05 01:39:13 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +34,6 @@ void	hook(void *param)
 	{
 		mlx_close_window(vars->mlx);
 		free(vars->p);
-		exit(1);
 	}
 }
 
@@ -56,8 +57,15 @@ int	fdf(char *map)
 
 int	main(int argc, char **argv)
 {
-	if (argc == 2)
+	int	f;
+
+	f = open(argv[1], O_RDONLY);
+	if (argc == 2 && f >= 0)
+	{
+		close(f);
 		fdf(argv[1]);
+	}
 	else
-		write(1, "give me a map or fuck off", 25);
+		write(1, "INPUT ERROR", 11);
+	return (0);
 }

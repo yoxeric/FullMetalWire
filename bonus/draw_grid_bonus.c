@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_grid.c                                        :+:      :+:    :+:   */
+/*   draw_grid_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:58:33 by yhachami          #+#    #+#             */
-/*   Updated: 2023/03/01 12:39:49 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/03/05 00:16:47 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	make_grid(t_vars *vars, t_vector3 step)
 	while (j < vars->grid_size.y)
 	{
 		step.z = vars->p[i][j].z * vars->grid_shift.z * vars->zoom
-			* sin(vars->grid_rot.y);
+			* vars->army.x * sin(vars->grid_rot.y);
 		vars->p[i][j].x = step.x;
 		vars->p[i][j].y = step.y - step.z;
 		step.x += vars->grid_shift.x * vars->zoom * cos(vars->grid_rot.x);
-		step.y += vars->grid_shift.y * vars->zoom
+		step.y += vars->grid_shift.y * vars->zoom * vars->project
 			* sin(vars->grid_rot.x) * cos(vars->grid_rot.y);
 		i++;
 		if (i == vars->grid_size.x)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_grid.c                                        :+:      :+:    :+:   */
+/*   init_grid_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:47:55 by yhachami          #+#    #+#             */
-/*   Updated: 2023/02/28 21:43:47 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/03/05 00:16:55 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	get_grid_len(t_vars *vars, int fd)
 		s.x = 0;
 		while (line[++i])
 			if (((line[i] >= '0' && line[i] <= '9') || line[i] == '-')
-				&& (line[i - 1] == ' '))
+				&& (i == 0 || line[i - 1] == ' '))
 				s.x++;
 		if (s.x > vars->grid_size.x)
-			vars->grid_size.x = s.x + 1;
+			vars->grid_size.x = s.x;
 		free(line);
 		line = get_next_line(fd);
 		s.y++;
@@ -56,7 +56,7 @@ void	forge_line(t_vars *vars, char *line, int y)
 				vars->p[x][y].x = x;
 				vars->p[x][y].y = y;
 				vars->p[x][y].z = ft_atoi(line + i);
-				vars->p[x][y].c = get_color("0xFFFFFFFF");
+				vars->p[x][y].c = get_color(DEF_COLOR);
 			}
 			if (line[i - 1] == ',')
 				vars->p[x][y].c = get_color(line + i);
@@ -95,13 +95,16 @@ void	init_grid(t_vars *vars, char *map)
 	get_grid_len(vars, f);
 	close(f);
 	vars->zoom = 1;
+	vars->army.x = 1;
+	vars->army.y = 1;
+	vars->project = 1;
 	vars->grid_start.x = 700;
-	vars->grid_start.y = 300;
-	vars->grid_rot.x = 0.79;
+	vars->grid_start.y = 250;
+	vars->grid_rot.x = 0.78;
 	vars->grid_rot.y = 1;
 	vars->grid_shift.x = 1337 / (vars->grid_size.x + vars->grid_size.y);
 	vars->grid_shift.y = 1337 / (vars->grid_size.x + vars->grid_size.y);
-	vars->grid_shift.z = (vars->grid_size.x / vars->grid_size.y);
+	vars->grid_shift.z = (vars->grid_size.x / vars->grid_size.y) * 2;
 	f = open(map, O_RDONLY);
 	forge_grid(vars, f);
 	close(f);

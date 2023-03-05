@@ -36,19 +36,19 @@ void	plot_line(mlx_image_t *img, t_vector3color p0, t_vector3color p1,
 		if (l.v.x == p1.x && l.v.y == p1.y)
 			break ;
 		l.e2 = 2 * l.err;
-		if (l.e2 >= l.dy)
+		if (l.e2 >= l.d.y)
 		{
 			if (l.v.x == p1.x)
 				break ;
-			l.err = l.err + l.dy;
-			l.v.x = l.v.x + l.sx;
+			l.err = l.err + l.d.y;
+			l.v.x = l.v.x + l.s.x;
 		}
-		if (l.e2 <= l.dx)
+		if (l.e2 <= l.d.x)
 		{
 			if (l.v.y == p1.y)
 				break ;
-			l.err = l.err + l.dx;
-			l.v.y = l.v.y + l.sy;
+			l.err = l.err + l.d.x;
+			l.v.y = l.v.y + l.s.y;
 		}
 	}
 }
@@ -59,16 +59,16 @@ void	draw_line(mlx_image_t *img, t_vector3color p0, t_vector3color p1)
 
 	l.v.x = p0.x;
 	l.v.y = p0.y;
-	l.dx = abs(p1.x - p0.x);
+	l.d.x = abs(p1.x - p0.x);
 	if (p0.x < p1.x)
-		l.sx = 1;
+		l.s.x = 1;
 	else
-		l.sx = -1;
-	l.dy = -abs(p1.y - p0.y);
+		l.s.x = -1;
+	l.d.y = -abs(p1.y - p0.y);
 	if (p0.y < p1.y)
-		l.sy = 1;
+		l.s.y = 1;
 	else
-		l.sy = -1;
-	l.err = l.dx + l.dy;
+		l.s.y = -1;
+	l.err = l.d.x + l.d.y;
 	plot_line(img, p0, p1, l);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf_bonus.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/04 23:59:09 by yhachami          #+#    #+#             */
+/*   Updated: 2023/03/05 00:18:04 by yhachami         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_BONUS_H
 # define FDF_BONUS_H
 
@@ -5,13 +17,12 @@
 # include <math.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <stdarg.h>
-# include <memory.h>
 # include <unistd.h>
 # include "MLX42/include/MLX42/MLX42.h"
 
 # define WIDTH 1920
 # define HEIGHT 1080
+# define DEF_COLOR "0xFFFFFFFF"
 # define BG_COLOR 0xBB0A1EAA
 
 typedef struct s_rgb {
@@ -46,10 +57,8 @@ typedef struct s_v2int {
 
 typedef struct s_plot {
 	t_vector2int	v;
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
+	t_vector2int	d;
+	t_vector2int	s;
 	int				err;
 	int				e2;
 }	t_plot;
@@ -62,6 +71,8 @@ typedef struct s_vars {
 	t_vector2		grid_size;
 	t_vector2int	mouse_pos;
 	t_vector2int	mouse_rot;
+	t_vector2		army;
+	float			project;
 	float			zoom;
 	int				index;
 	mlx_t			*mlx;
@@ -80,6 +91,7 @@ void		draw_line(mlx_image_t *img, t_vector3color p0, t_vector3color p1);
 int			interpolate_color(t_rgb c1, t_rgb c2, float t);
 t_rgb		get_color(char *s);
 int			rgb2int(t_rgb c);
+void		hook_projection(void *params);
 void		hook_move(void *param);
 void		hook_move2(void *param);
 void		hook_mouse(mouse_key_t mk, action_t a, modifier_key_t m, void *p);

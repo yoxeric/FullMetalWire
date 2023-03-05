@@ -33,10 +33,15 @@ void	hook(void *param)
 
 	vars = (t_vars *)param;
 	render(vars);
-	if (mlx_is_key_down(vars->mlx, MLX_KEY_BACKSPACE))
+	if (mlx_is_key_down(vars->mlx, MLX_KEY_0)
+		|| mlx_is_key_down(vars->mlx, MLX_KEY_KP_0))
 	{
+		vars->zoom = 1;
 		vars->grid_start.x = 700;
-		vars->grid_start.y = 200;
+		vars->grid_start.y = 300;
+		vars->grid_shift.x = 1337 / (vars->grid_size.x + vars->grid_size.y);
+		vars->grid_shift.y = 1337 / (vars->grid_size.x + vars->grid_size.y);
+		vars->grid_shift.z = (vars->grid_size.x / vars->grid_size.y);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_ESCAPE))
 	{
@@ -59,6 +64,7 @@ int	fdf(char *map)
 	render_ui(&vars);
 	mlx_loop_hook(vars.mlx, hook, &vars);
 	mlx_mouse_hook(vars.mlx, hook_mouse, &vars);
+	mlx_loop_hook(vars.mlx, hook_projection, &vars);
 	mlx_loop_hook(vars.mlx, hook_move, &vars);
 	mlx_loop_hook(vars.mlx, hook_zoom, &vars);
 	mlx_loop_hook(vars.mlx, hook_zoom2, &vars);
@@ -73,8 +79,15 @@ int	fdf(char *map)
 
 int	main(int argc, char **argv)
 {
-	if (argc == 2)
+	int	f;
+
+	f = open(argv[1], O_RDONLY);
+	if (argc == 2 && f >= 0)
+	{
+		close(f);
 		fdf(argv[1]);
+	}
 	else
-		write(1, "give me some or fuck off", 25);
+		write(1, "INPUT ERROR:", 11);
+	return (0);
 }

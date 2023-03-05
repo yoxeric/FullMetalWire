@@ -17,13 +17,12 @@
 # include <math.h>
 # include <stdlib.h>
 # include <fcntl.h>
-// # include <stdarg.h>
-// # include <memory.h>
 # include <unistd.h>
 # include "MLX42/include/MLX42/MLX42.h"
 
 # define WIDTH 1440
 # define HEIGHT 1080
+# define DEF_COLOR "0xFFFFFFFF"
 # define BG_COLOR 0xBB0A1EAA
 
 typedef struct s_rgb {
@@ -58,10 +57,8 @@ typedef struct s_v2int {
 
 typedef struct s_plot {
 	t_vector2int	v;
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
+	t_vector2int	d;
+	t_vector2int	s;
 	int				err;
 	int				e2;
 }	t_plot;
@@ -72,7 +69,6 @@ typedef struct s_vars {
 	t_vector3		grid_rot;
 	t_vector2		grid_start;
 	t_vector2		grid_size;
-	float			zoom;
 	int				index;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
@@ -80,6 +76,7 @@ typedef struct s_vars {
 }		t_vars;
 
 char		*get_next_line(int fd);
+char		*ft_itoa(int n);
 int			ft_atoi(char *str);
 void		ft_error(void);
 void		init_grid(t_vars *vars, char *map);

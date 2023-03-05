@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   control2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhachami <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 23:23:58 by yhachami          #+#    #+#             */
-/*   Updated: 2023/02/19 23:24:16 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/03/05 00:17:42 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ void	hook_zoom(void *param)
 	t_vars	*vars;
 
 	vars = (t_vars *)param;
+	if (mlx_is_key_down(vars->mlx, MLX_KEY_1)
+		|| mlx_is_key_down(vars->mlx, MLX_KEY_KP_1))
+	{
+		vars->army.x = 1;
+		vars->army.y = 1;
+		vars->project = 1;
+		vars->grid_rot.x = 0.78;
+		vars->grid_rot.y = 1;
+	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_KP_ADD))
 	{
 		vars->index = 6;
