@@ -30,7 +30,7 @@ void	resize_hook(int width, int height, void *param)
 	draw_grid(vars);
 	if (!vars->img || (mlx_image_to_window(vars->mlx, vars->img, 0, 0) < 0))
 		ft_error();
-	i = 8;
+	i = -1;
 	while (++i < 30)
 		mlx_delete_image(vars->mlx, vars->ui[i]);
 	render_ui(vars, width, height);

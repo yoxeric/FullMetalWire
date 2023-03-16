@@ -79,28 +79,14 @@ void	draw_grid(t_vars *vars)
 
 void	init_grid(t_vars *vars)
 {
-	t_vector3	s;
-
 	vars->army.x = 1;
 	vars->army.y = 1;
 	vars->project = 1;
-	vars->grid_start.x = (vars->img->width / 2);
-	vars->grid_start.y = (vars->img->height / 4);
 	vars->grid_shift.x = 1;
 	vars->grid_shift.y = 1;
-	vars->grid_shift.z = 0.5;
-	if (vars->grid_size.x < 20 && vars->grid_size.y < 20)
-		vars->grid_shift.z = 0.1;
-	s.x = (vars->img->width / vars->grid_size.x);
-	s.y = (vars->img->height / vars->grid_size.y);
-	if (s.x < s.y && s.x > 0)
-		vars->zoom = s.x / 2;
-	else if (s.x > 0 && s.y > 0)
-		vars->zoom = s.y / 2;
-	else
-		vars->zoom = 0.1;
 	vars->grid_rot.x = M_PI / 4;
 	vars->grid_rot.y = M_PI / 4;
+	reset_grid(vars);
 }
 
 void	reset_grid(t_vars *vars)

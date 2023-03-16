@@ -41,7 +41,7 @@ void	render_text(t_vars *vars, int index, float val, int pos)
 {
 	char	*text;
 
-	// if (vars->ui[index])
+	if (vars->ui[index])
 		mlx_delete_image(vars->mlx, vars->ui[index]);
 	text = ft_itoa(val);
 	vars->ui[index] = mlx_put_string(vars->mlx, text,
