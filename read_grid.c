@@ -1,42 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_grid_bonus.c                                  :+:      :+:    :+:   */
+/*   read_grid.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:47:55 by yhachami          #+#    #+#             */
-/*   Updated: 2023/03/05 00:16:55 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/02/28 21:43:47 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../fdf_bonus.h"
+#include"fdf.h"
 
-void	get_grid_len(t_vars *vars, int fd)
+void	fill_line(t_vars *vars, int x, int y)
 {
-	t_vector2	s;
-	char		*line;
-	int			i;
-
-	s.x = 0;
-	s.y = 0;
-	line = get_next_line(fd);
-	while (line)
+	while (x < vars->grid_size.x - 1)
 	{
-		i = -1;
-		s.x = 0;
-		while (line[++i])
-			if (((line[i] >= '0' && line[i] <= '9') || line[i] == '-')
-				&& (i == 0 || line[i - 1] == ' '))
-				s.x++;
-		if (s.x > vars->grid_size.x)
-			vars->grid_size.x = s.x;
-		free(line);
-		line = get_next_line(fd);
-		s.y++;
+		x++;
+		vars->p[x][y].x = x;
+		vars->p[x][y].y = y;
+		vars->p[x][y].z = 0;
+		vars->p[x][y].c = get_color(DEFAULT_COLOR);
 	}
-	free(line);
-	vars->grid_size.y = s.y;
 }
 
 void	forge_line(t_vars *vars, char *line, int y)
@@ -56,12 +41,14 @@ void	forge_line(t_vars *vars, char *line, int y)
 				vars->p[x][y].x = x;
 				vars->p[x][y].y = y;
 				vars->p[x][y].z = ft_atoi(line + i);
-				vars->p[x][y].c = get_color(DEF_COLOR);
+				vars->p[x][y].c = get_color(DEFAULT_COLOR);
 			}
 			if (line[i - 1] == ',')
 				vars->p[x][y].c = get_color(line + i);
 		}
 	}
+	if (x < vars->grid_size.x - 1)
+		fill_line(vars, x, y);
 }
 
 void	forge_grid(t_vars *vars, int fd)
@@ -73,8 +60,14 @@ void	forge_grid(t_vars *vars, int fd)
 			* sizeof(t_vector3color *));
 	y = -1;
 	while (++y < vars->grid_size.x)
+	{
 		vars->p[y] = (t_vector3color *) malloc(vars->grid_size.y
 				* sizeof(t_vector3color));
+		if (!vars->p[y])
+			exit(1);
+	}
+	if (!vars->p)
+		exit(1);
 	y = 0;
 	line = get_next_line(fd);
 	while (line)
@@ -87,24 +80,42 @@ void	forge_grid(t_vars *vars, int fd)
 	free(line);
 }
 
-void	init_grid(t_vars *vars, char *map)
+void	get_grid_len(t_vars *vars, int fd)
+{
+	t_vector2	s;
+	char		*line;
+	int			i;
+
+	s.x = 0;
+	s.y = 0;
+	line = get_next_line(fd);
+	while (line)
+	{
+		i = -1;
+		s.x = 0;
+		while (line[++i])
+		{
+			if (((line[i] >= '0' && line[i] <= '9') || line[i] == '-')
+				&& (i == 0 || line[i - 1] == ' '))
+				s.x++;
+		}
+		if (vars->grid_size.x < s.x)
+			vars->grid_size.x = s.x;
+		free(line);
+		line = get_next_line(fd);
+		s.y++;
+	}
+	free(line);
+	vars->grid_size.y = s.y;
+}
+
+void	read_grid(t_vars *vars, char *map)
 {
 	int	f;
 
 	f = open(map, O_RDONLY);
 	get_grid_len(vars, f);
 	close(f);
-	vars->zoom = 1;
-	vars->army.x = 1;
-	vars->army.y = 1;
-	vars->project = 1;
-	vars->grid_start.x = 700;
-	vars->grid_start.y = 250;
-	vars->grid_rot.x = 0.78;
-	vars->grid_rot.y = 1;
-	vars->grid_shift.x = 1337 / (vars->grid_size.x + vars->grid_size.y);
-	vars->grid_shift.y = 1337 / (vars->grid_size.x + vars->grid_size.y);
-	vars->grid_shift.z = (vars->grid_size.x / vars->grid_size.y) * 2;
 	f = open(map, O_RDONLY);
 	forge_grid(vars, f);
 	close(f);

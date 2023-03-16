@@ -62,5 +62,37 @@ void	hook_rot2(void *param)
 	}
 }
 
-	
+t_rgb	get_color(char *s)
+{
+	t_rgb color;
 
+	if (s[0] == '0' && s[1] == 'x')
+	{
+		color.r = get_chanel(s + 2);
+		if (s[4] != ' ')
+			color.g = get_chanel(s + 4);
+		else
+			color.g = 0;
+		if (s[6] != ' ')
+			color.b = get_chanel(s + 6);
+		else
+			color.b = 0;
+		if (s[8] != ' ')
+			color.a = get_chanel(s + 8);
+		else
+			color.a = 255;
+	}
+	else
+	{
+		color.r = 0;
+		color.g = 0;
+		color.b = 0;
+		color.a = 255;
+	}
+	return (color);
+}
+
+int	rgb2int(t_rgb c)
+{
+	return (c.r * 16777216 + c.g * 65536 + c.b * 256 + c.a);
+}

@@ -10,7 +10,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../fdf_bonus.h"
+#include"fdf_bonus.h"
+
+int	find_end(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != ' ' && s[i] != '\n' && s[i] != '\0')
+		i++;
+	return (i);
+}
+
+t_rgb	int2rgb(unsigned int mono)
+{
+	t_rgb	color;
+
+	if (mono > 0xFFFFFF)
+	{
+		color.r = (mono >> 24) & 0xFF;
+		color.g = (mono >> 16) & 0xFF;
+		color.b = (mono >> 8) & 0xFF;
+		color.a = mono & 0xFF;
+	}
+	else
+	{
+		color.r = (mono >> 16) & 0xFF;
+		color.g = (mono >> 8) & 0xFF;
+		color.b = mono & 0xFF;
+		color.a = 255;
+	}
+	return (color);
+}
+
+int	rgb2int(t_rgb c)
+{
+	return (c.r << 24 | c.g << 16 | c.b << 8 | c.a);
+}
 
 int	get_chanel(char *s)
 {
@@ -18,7 +54,7 @@ int	get_chanel(char *s)
 	int	v;
 	int	base;
 
-	i = 2;
+	i = find_end(s);
 	v = 0;
 	base = 1;
 	while (--i >= 0)
@@ -36,36 +72,11 @@ int	get_chanel(char *s)
 
 t_rgb	get_color(char *s)
 {
-	t_rgb	color;
+	long long int	mono;
 
-	color.r = get_chanel(s + 2);
-	if (s[4] != ' ')
-		color.g = get_chanel(s + 4);
+	if (s[0] == '0' && s[1] == 'x')
+		mono = get_chanel(s + 2);
 	else
-		color.g = 0;
-	if (s[6] != ' ')
-		color.b = get_chanel(s + 6);
-	else
-		color.b = 0;
-	if (s[8] != ' ')
-		color.a = get_chanel(s + 8);
-	else
-		color.a = 255;
-	return (color);
-}
-
-int	rgb2int(t_rgb c)
-{
-	return (c.r * 16777216 + c.g * 65536 + c.b * 256 + c.a);
-}
-
-int	interpolate_color(t_rgb c1, t_rgb c2, float t)
-{
-	t_rgb	result;
-
-	result.r = c1.r + (int)((c2.r - c1.r) * t);
-	result.g = c1.g + (int)((c2.g - c1.g) * t);
-	result.b = c1.b + (int)((c2.b - c1.b) * t);
-	result.a = c1.a + (int)((c2.a - c1.a) * t);
-	return (rgb2int(result));
+		mono = get_chanel("FFFFFF");
+	return (int2rgb(mono));
 }

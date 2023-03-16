@@ -26,9 +26,9 @@ void	hook_mouse(mouse_key_t mouse_key, action_t action,
 
 void	zoom(t_vars *vars, int sign)
 {
-	vars->zoom += 0.01 * sign;
-	if (vars->zoom < 0.01)
-		vars->zoom = 0.01;
+	vars->zoom += 0.3 * sign;
+	if (vars->zoom < 0.1)
+		vars->zoom = 0.1;
 }
 
 void	hook_zoom(void *param)
@@ -47,13 +47,13 @@ void	hook_zoom(void *param)
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_KP_ADD))
 	{
-		vars->index = 6;
-		vars->grid_shift.z += up_ui(vars, vars->grid_shift.z * 10, 375, 0.1);
+		vars->grid_shift.z += 0.01;
+		render_text(vars, 6, vars->grid_shift.z * 10, 375);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_KP_SUBTRACT))
 	{
-		vars->index = 6;
-		vars->grid_shift.z -= up_ui(vars, vars->grid_shift.z * 10, 375, 0.1);
+		vars->grid_shift.z -= 0.01;
+		render_text(vars, 6, vars->grid_shift.z * 10, 375);
 	}
 }
 
@@ -65,17 +65,12 @@ void	hook_zoom2(void *param)
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_PAGE_UP))
 	{
 		zoom(vars, 1);
-		vars->index = 5;
-		up_ui(vars, vars->zoom * 100, 300, 1);
+		render_text(vars, 5, vars->zoom * 10, 300);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_PAGE_DOWN))
 	{
-		if (vars->grid_shift.x + vars->grid_shift.y > 2.5)
-		{
-			zoom(vars, -1);
-			vars->index = 5;
-			up_ui(vars, vars->zoom * 100, 300, 1);
-		}
+		zoom(vars, -1);
+		render_text(vars, 5, vars->zoom * 10, 300);
 	}
 }
 
@@ -87,13 +82,11 @@ void	hook_zoom3(double x, double y, void *param)
 	if ((x != 0 || y > 0) && vars->zoom > 0.05)
 	{
 		zoom(vars, x - y);
-		vars->index = 5;
-		up_ui(vars, vars->zoom * 100, 300, 1);
+		render_text(vars, 5, vars->zoom * 10, 300);
 	}
 	if ((x != 0 || y < 0))
 	{
 		zoom(vars, x - y);
-		vars->index = 5;
-		up_ui(vars, vars->zoom * 100, 300, 1);
+		render_text(vars, 5, vars->zoom * 10, 300);
 	}
 }

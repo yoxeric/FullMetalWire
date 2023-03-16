@@ -44,18 +44,18 @@ void	hook_move(void *param)
 	vars = (t_vars *)param;
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_LEFT))
 	{
-		vars->index = 0;
-		vars->grid_start.x -= up_ui(vars, vars->grid_start.x, 100, 7);
+		vars->grid_start.x -= 7;
+		render_text(vars, 0, vars->grid_start.x, 100);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_RIGHT))
 	{
-		vars->index = 0;
-		vars->grid_start.x += up_ui(vars, vars->grid_start.x, 100, 7);
+		vars->grid_start.x += 7;
+		render_text(vars, 0, vars->grid_start.x, 100);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_UP))
 	{
-		vars->index = 1;
-		vars->grid_start.y -= up_ui(vars, vars->grid_start.y, 125, 7);
+		vars->grid_start.y -= 7;
+		render_text(vars, 1, vars->grid_start.y, 125);
 	}
 }
 
@@ -69,18 +69,16 @@ void	hook_move2(void *param)
 	vars = (t_vars *)param;
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_DOWN))
 	{
-		vars->index = 1;
-		vars->grid_start.y += up_ui(vars, vars->grid_start.y, 125, 7);
+		vars->grid_start.y += 7;
+		render_text(vars, 1, vars->grid_start.y, 125);
 	}
 	if (mlx_is_mouse_down(vars->mlx, MLX_MOUSE_BUTTON_LEFT))
 	{
 		mlx_get_mouse_pos(vars->mlx, &mouse_pos.x, &mouse_pos.y);
-		vars->index = 0;
-		vars->grid_start.x -= up_ui(vars, vars->grid_start.x, 100,
-				(vars->mouse_pos.x - mouse_pos.x) / 25);
-		vars->index = 1;
-		vars->grid_start.y -= up_ui(vars, vars->grid_start.y, 125,
-				(vars->mouse_pos.y - mouse_pos.y) / 25);
+		vars->grid_start.x -= (vars->mouse_pos.x - mouse_pos.x) / 25;
+		render_text(vars, 0, vars->grid_start.x, 100);
+		vars->grid_start.y -= (vars->mouse_pos.y - mouse_pos.y) / 25;
+		render_text(vars, 1, vars->grid_start.y, 125);
 	}
 }
 
@@ -91,23 +89,23 @@ void	hook_rot(void *param)
 	vars = (t_vars *)param;
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_A))
 	{
-		vars->index = 2;
-		vars->grid_rot.x += up_ui(vars, vars->grid_rot.x * 10, 200, 0.02);
+		vars->grid_rot.x += 0.02;
+		render_text(vars, 2, vars->grid_rot.x * 10, 200);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_D))
 	{
-		vars->index = 2;
-		vars->grid_rot.x -= up_ui(vars, vars->grid_rot.x * 10, 200, 0.02);
+		vars->grid_rot.x -= 0.02;
+		render_text(vars, 2, vars->grid_rot.x * 10, 200);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_W) && vars->army.y != 0)
 	{
-		vars->index = 3;
-		vars->grid_rot.y += up_ui(vars, vars->grid_rot.y * 10, 225, 0.02);
+		vars->grid_rot.y += 0.02;
+		render_text(vars, 3, vars->grid_rot.y * 10, 225);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_S) && vars->army.y != 0)
 	{
-		vars->index = 3;
-		vars->grid_rot.y -= up_ui(vars, vars->grid_rot.y * 10, 225, 0.02);
+		vars->grid_rot.y -= 0.02;
+		render_text(vars, 3, vars->grid_rot.y * 10, 225);
 	}
 }
 
@@ -122,16 +120,15 @@ void	hook_rot3(void *param)
 	if (mlx_is_mouse_down(vars->mlx, MLX_MOUSE_BUTTON_RIGHT))
 	{
 		mlx_get_mouse_pos(vars->mlx, &mouse_pos.x, &mouse_pos.y);
-		vars->index = 2;
-		vars->grid_rot.x += up_ui(vars, vars->grid_rot.x * 10, 200,
-				(float)(vars->mouse_rot.x - mouse_pos.x) / 7500);
+		vars->grid_rot.x += (float)(vars->mouse_rot.x - mouse_pos.x) / 7500;
+		render_text(vars, 2, vars->grid_rot.x * 10, 200);
 	}
-	if (mlx_is_mouse_down(vars->mlx, MLX_MOUSE_BUTTON_RIGHT))
+	if (mlx_is_mouse_down(vars->mlx, MLX_MOUSE_BUTTON_RIGHT)
+		&& vars->army.y != 0)
 	{
 		mlx_get_mouse_pos(vars->mlx, &mouse_pos.x, &mouse_pos.y);
-		vars->index = 3;
-		vars->grid_rot.y += up_ui(vars, vars->grid_rot.y * 10, 225,
-				(float)(vars->mouse_rot.y - mouse_pos.y) / 25000);
+		vars->grid_rot.y += (float)(vars->mouse_rot.y - mouse_pos.y) / 25000;
+		render_text(vars, 3, vars->grid_rot.y * 10, 225);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_X))
 		vars->grid_rot.x = 1;

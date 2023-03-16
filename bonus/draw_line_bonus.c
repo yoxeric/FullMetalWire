@@ -10,65 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../fdf_bonus.h"
+#include"fdf_bonus.h"
 
-void	draw_pixel(mlx_image_t *img, t_vector3color p0, t_vector3color p1,
-			t_vector2int v)
+void	draw_pixel(t_vars *vars, t_vector3 v,
+		t_vector3color p0, t_vector3color p1)
 {
 	int		color;
-	double	num;
-	double	denom;
+	float	num;
+	float	denom;
+	t_rgb	lerp;
 
-	num = (v.x - p0.x) * (p1.x - p0.x) + (v.y - p0.y) * (p1.y - p0.y);
-	denom = pow(p1.x - p0.x, 2) + pow(p1.y - p0.y, 2);
-	color = interpolate_color(p0.c, p1.c, num / denom);
-	mlx_put_pixel(img, v.x, v.y, color);
-}
-
-void	plot_line(mlx_image_t *img, t_vector3color p0, t_vector3color p1,
-		t_plot l)
-{
-	while (true)
+	if (v.x > 5 && v.x < (int) vars->img->width - 5
+		&& v.y > 5 && v.y < (int) vars->img->height - 5)
 	{
-		if (l.v.x > 5 && l.v.y > 5
-			&& l.v.x < (int) img->width - 5 && l.v.y < (int) img->height - 5)
-			draw_pixel(img, p0, p1, l.v);
-		if (l.v.x == p1.x && l.v.y == p1.y)
-			break ;
-		l.e2 = 2 * l.err;
-		if (l.e2 >= l.d.y)
-		{
-			if (l.v.x == p1.x)
-				break ;
-			l.err = l.err + l.d.y;
-			l.v.x = l.v.x + l.s.x;
-		}
-		if (l.e2 <= l.d.x)
-		{
-			if (l.v.y == p1.y)
-				break ;
-			l.err = l.err + l.d.x;
-			l.v.y = l.v.y + l.s.y;
-		}
+		num = (v.x - p0.x) * (p1.x - p0.x) + (v.y - p0.y) * (p1.y - p0.y);
+		denom = pow(p1.x - p0.x, 2) + pow(p1.y - p0.y, 2);
+		lerp.r = p0.c.r + (int)((p1.c.r - p0.c.r) * (num / denom));
+		lerp.g = p0.c.g + (int)((p1.c.g - p0.c.g) * (num / denom));
+		lerp.b = p0.c.b + (int)((p1.c.b - p0.c.b) * (num / denom));
+		lerp.a = p0.c.a + (int)((p1.c.a - p0.c.a) * (num / denom));
+		color = rgb2int(lerp);
+		mlx_put_pixel(vars->img, v.x, v.y, color);
 	}
 }
 
-void	draw_line(mlx_image_t *img, t_vector3color p0, t_vector3color p1)
+void	draw_line(t_vars *vars, t_vector3color p0, t_vector3color p1)
 {
-	t_plot	l;
+	t_vector3	v;
+	t_vector3	d;
+	int			i;
 
-	l.v.x = p0.x;
-	l.v.y = p0.y;
-	l.d.x = abs(p1.x - p0.x);
-	if (p0.x < p1.x)
-		l.s.x = 1;
+	v.x = p0.x;
+	v.y = p0.y;
+	d.x = p1.x - p0.x;
+	d.y = p1.y - p0.y;
+	d.z = d.y / d.x;
+	if (fabs(d.x) >= fabs(d.y))
+		d.z = fabs(d.x);
 	else
-		l.s.x = -1;
-	l.d.y = -abs(p1.y - p0.y);
-	if (p0.y < p1.y)
-		l.s.y = 1;
-	else
-		l.s.y = -1;
-	l.err = l.d.x + l.d.y;
-	plot_line(img, p0, p1, l);
+		d.z = fabs(d.y);
+	d.x = d.x / d.z;
+	d.y = d.y / d.z;
+	i = 1;
+	while (i <= d.z)
+	{
+		draw_pixel(vars, v, p0, p1);
+		v.x = v.x + d.x;
+		v.y = v.y + d.y;
+		i++;
+	}
 }

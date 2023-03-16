@@ -18,18 +18,18 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
-# include "MLX42/include/MLX42/MLX42.h"
+# include "../MLX42/include/MLX42/MLX42.h"
 
 # define WIDTH 1920
 # define HEIGHT 1080
-# define DEF_COLOR "0xFFFFFFFF"
+# define DEFAULT_COLOR "0xFFFFFFFF"
 # define BG_COLOR 0xBB0A1EAA
 
 typedef struct s_rgb {
-	int		r;
-	int		g;
-	int		b;
-	int		a;
+	int	r;
+	int	g;
+	int	b;
+	int	a;
 }	t_rgb;
 
 typedef struct s_v3c {
@@ -55,14 +55,6 @@ typedef struct s_v2int {
 	int	y;
 }	t_vector2int;
 
-typedef struct s_plot {
-	t_vector2int	v;
-	t_vector2int	d;
-	t_vector2int	s;
-	int				err;
-	int				e2;
-}	t_plot;
-
 typedef struct s_vars {
 	t_vector3color	**p;
 	t_vector3		grid_shift;
@@ -74,21 +66,21 @@ typedef struct s_vars {
 	t_vector2		army;
 	float			project;
 	float			zoom;
-	int				index;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
-	mlx_image_t		*ui[11];
+	mlx_image_t		*ui[30];
 }		t_vars;
 
 char		*get_next_line(int fd);
 char		*ft_itoa(int n);
 int			ft_atoi(char *str);
 void		ft_error(void);
-void		init_grid(t_vars *vars, char *map);
+void		read_grid(t_vars *vars, char *map);
+void		init_grid(t_vars *vars);
+void		reset_grid(t_vars *vars);
 void		make_grid(t_vars *vars, t_vector3 step);
 void		draw_grid(t_vars *vars);
-void		draw_line(mlx_image_t *img, t_vector3color p0, t_vector3color p1);
-int			interpolate_color(t_rgb c1, t_rgb c2, float t);
+void		draw_line(t_vars *vars, t_vector3color p0, t_vector3color p1);
 t_rgb		get_color(char *s);
 int			rgb2int(t_rgb c);
 void		hook_projection(void *params);
@@ -100,6 +92,8 @@ void		hook_rot3(void *param);
 void		hook_zoom(void *param);
 void		hook_zoom2(void *param);
 void		hook_zoom3(double x, double y, void *param);
-void		render_ui(t_vars *vars);
-float		up_ui(t_vars *vars, float v, int pos, float step);
+void		render(t_vars *vars);
+void		render_ui(t_vars *vars, int width, int height);
+void		render_ui_text(t_vars *vars);
+void		render_text(t_vars *vars, int index, float val, int pos);
 #endif
