@@ -56,18 +56,6 @@ void	forge_grid(t_vars *vars, int fd)
 	int		y;
 	char	*line;
 
-	vars->p = (t_vector3color **) malloc(vars->grid_size.x
-			* sizeof(t_vector3color *));
-	y = -1;
-	while (++y < vars->grid_size.x)
-	{
-		vars->p[y] = (t_vector3color *) malloc(vars->grid_size.y
-				* sizeof(t_vector3color));
-		if (!vars->p[y])
-			exit(1);
-	}
-	if (!vars->p)
-		exit(1);
 	y = 0;
 	line = get_next_line(fd);
 	while (line)
@@ -116,6 +104,18 @@ void	read_grid(t_vars *vars, char *map)
 	f = open(map, O_RDONLY);
 	get_grid_len(vars, f);
 	close(f);
+	vars->p = (t_vector3color **) malloc(vars->grid_size.x
+			* sizeof(t_vector3color *));
+	if (!vars->p)
+		exit(1);
+	f = -1;
+	while (++f < vars->grid_size.x)
+	{
+		vars->p[f] = (t_vector3color *) malloc(vars->grid_size.y
+				* sizeof(t_vector3color));
+		if (!vars->p[f])
+			exit(1);
+	}
 	f = open(map, O_RDONLY);
 	forge_grid(vars, f);
 	close(f);

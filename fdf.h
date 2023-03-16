@@ -23,7 +23,6 @@
 # define WIDTH 1440
 # define HEIGHT 1080
 # define DEFAULT_COLOR "0xFFFFFFFF"
-# define BG_COLOR 0xBB0A1EAA
 
 typedef struct s_rgb {
 	int	r;
@@ -62,12 +61,10 @@ typedef struct s_vars {
 }		t_vars;
 
 char		*get_next_line(int fd);
-char		*ft_itoa(int n);
 int			ft_atoi(char *str);
 void		ft_error(void);
 void		read_grid(t_vars *vars, char *map);
 void		init_grid(t_vars *vars);
-void		make_grid(t_vars *vars, t_vector3 step);
 void		draw_grid(t_vars *vars);
 void		draw_line(t_vars *vars, t_vector3color p0, t_vector3color p1);
 t_rgb		get_color(char *s);

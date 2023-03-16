@@ -26,7 +26,7 @@ t_rgb	int2rgb(long long int mono)
 {
 	t_rgb	color;
 
-	if (mono > 16777215)
+	if (mono > 0xFFFFFF)
 	{
 		color.r = (mono >> 24) & 0xFF;
 		color.g = (mono >> 16) & 0xFF;

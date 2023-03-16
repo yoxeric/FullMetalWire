@@ -46,8 +46,9 @@ void	hook(void *param)
 		|| mlx_is_key_down(vars->mlx, MLX_KEY_KP_0)
 		|| mlx_is_key_down(vars->mlx, MLX_KEY_SPACE))
 	{
-		init_grid(vars);
 		resize_hook(vars->mlx->width, vars->mlx->height, vars);
+		init_grid(vars);
+		render_ui_text(vars);
 	}
 	if (mlx_is_key_down(vars->mlx, MLX_KEY_ESCAPE))
 	{

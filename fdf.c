@@ -86,6 +86,6 @@ int	main(int argc, char **argv)
 			write(1, "INVALID INPUT", 13);
 	}
 	else
-		write(1, "INPUT ERROR: no map", 19);
+		write(1, "INPUT ERROR: enter a .fdf map", 29);
 	return (0);
 }
