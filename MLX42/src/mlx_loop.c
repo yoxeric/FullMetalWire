@@ -98,7 +98,7 @@ void mlx_loop(mlx_t* mlx)
 		mlx->delta_time = start - oldstart;
 		oldstart = start;
 	
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwGetWindowSize(mlx->window, &(mlx->width), &(mlx->height));
 
