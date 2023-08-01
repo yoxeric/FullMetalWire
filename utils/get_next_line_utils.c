@@ -23,15 +23,15 @@ int	get_nl(char *s)
 	return (i + 1);
 }
 
-int	ft_strlen(char *s)
-{
-	int	l;
+// int	ft_strlen(char *s)
+// {
+// 	int	l;
 
-	l = 0;
-	while (s[l])
-		l++;
-	return (l);
-}
+// 	l = 0;
+// 	while (s[l])
+// 		l++;
+// 	return (l);
+// }
 
 char	*ft_strjoin(char *s1, char *s2)
 {

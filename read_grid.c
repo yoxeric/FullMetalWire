@@ -6,7 +6,7 @@
 /*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:47:55 by yhachami          #+#    #+#             */
-/*   Updated: 2023/02/28 21:43:47 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:54:37 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ void	get_grid_len(t_vars *vars, int fd)
 	s.x = 0;
 	s.y = 0;
 	line = get_next_line(fd);
+	if (!line)
+		exit(1);
 	while (line)
 	{
 		i = -1;
@@ -119,4 +121,5 @@ void	read_grid(t_vars *vars, char *map)
 	f = open(map, O_RDONLY);
 	forge_grid(vars, f);
 	close(f);
+	init_grid(vars);
 }

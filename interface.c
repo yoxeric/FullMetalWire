@@ -6,11 +6,11 @@
 /*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 20:25:19 by yhachami          #+#    #+#             */
-/*   Updated: 2023/03/05 00:18:51 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:32:51 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"fdf_bonus.h"
+#include"fdf.h"
 
 void	render_bg(t_vars *vars, int width, int height)
 {

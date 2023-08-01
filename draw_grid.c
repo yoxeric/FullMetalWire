@@ -6,11 +6,21 @@
 /*   By: yhachami <yhachami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 19:58:33 by yhachami          #+#    #+#             */
-/*   Updated: 2023/03/01 12:39:49 by yhachami         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:53:29 by yhachami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"fdf.h"
+
+void	render(t_vars *vars)
+{
+	mlx_delete_image(vars->mlx, vars->img);
+	vars->img = mlx_new_image(vars->mlx, vars->mlx->width
+			- (vars->mlx->width / 5), vars->mlx->height);
+	draw_grid(vars);
+	if (!vars->img || (mlx_image_to_window(vars->mlx, vars->img, 0, 0) < 0))
+		ft_error();
+}
 
 void	make_grid(t_vars *vars, t_vector3 step)
 {
@@ -22,12 +32,12 @@ void	make_grid(t_vars *vars, t_vector3 step)
 	while (j < vars->grid_size.y)
 	{
 		step.z = vars->p[i][j].z * vars->grid_shift.z * vars->zoom
-			* sin(vars->grid_rot.y);
+			* sin(vars->grid_rot.y) * vars->army.x ;
 		vars->p[i][j].x = step.x;
 		vars->p[i][j].y = step.y - step.z;
 		step.x += vars->grid_shift.x * vars->zoom * cos(vars->grid_rot.x);
 		step.y += vars->grid_shift.y * vars->zoom * sin(vars->grid_rot.x)
-			* cos(vars->grid_rot.y);
+			* cos(vars->grid_rot.y) * vars->project ;
 		i++;
 		if (i == vars->grid_size.x)
 		{
@@ -69,12 +79,22 @@ void	draw_grid(t_vars *vars)
 
 void	init_grid(t_vars *vars)
 {
+	vars->army.x = 1;
+	vars->army.y = 1;
+	vars->project = 1;
+	vars->grid_shift.x = 1;
+	vars->grid_shift.y = 1;
+	vars->grid_rot.x = M_PI / 4;
+	vars->grid_rot.y = M_PI / 4;
+	reset_grid(vars);
+}
+
+void	reset_grid(t_vars *vars)
+{
 	t_vector3	s;
 
 	vars->grid_start.x = (vars->img->width / 2);
 	vars->grid_start.y = (vars->img->height / 4);
-	vars->grid_shift.x = 1;
-	vars->grid_shift.y = 1;
 	vars->grid_shift.z = 0.5;
 	if (vars->grid_size.x < 20 && vars->grid_size.y < 20)
 		vars->grid_shift.z = 0.1;
@@ -86,6 +106,4 @@ void	init_grid(t_vars *vars)
 		vars->zoom = s.y / 2;
 	else
 		vars->zoom = 0.1;
-	vars->grid_rot.x = M_PI / 4;
-	vars->grid_rot.y = M_PI / 4;
 }
